@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('subjects', function (Blueprint $table) {
-            $table->renameColumn('subject_is', 'subject_id');//
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('faculty_id')->nullable();
+            $table->foreign('faculty_id')->references('faculty_id')->on('faculties')->onDelete('cascade');
         });
     }
 
@@ -25,8 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('subjects', function (Blueprint $table) {
-            //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['faculty_id']);
+            $table->dropColumn('faculty_id');
         });
     }
 };
