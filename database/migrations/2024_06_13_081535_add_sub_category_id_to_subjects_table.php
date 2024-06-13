@@ -14,13 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('subjects', function (Blueprint $table) {
-            $table->id('subject_id');
-            $table->string('name', 200);
-            $table->integer('grade');
-            $table->string('semester', 200);
-            $table->decimal('credit', $precision = 2, $scale = 1);
-            $table->timestamps();
-            $table->softDeletes();
+            $table->unsignedBigInteger('sub_category_id')->nullable();
+            $table->foreign('sub_category_id')->references('sub_category_id')->on('sub_categories')->onDelete('cascade');
         });
     }
 
@@ -31,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subjects');
+        Schema::table('subjects', function (Blueprint $table) {
+            $table->dropForeign(['sub_category_id']);
+            $table->dropColumn('sub_category_id');
+        });
     }
 };
